@@ -27,7 +27,7 @@ loop(Accounts)->
                     loop(maps:remove(Username,Accounts));
                 {ok,_} -> 
                     From ! {invalid_passwd,?MODULE},
-                    loop(maps:remove(Username,Accounts));
+                    loop(Accounts);
                 error -> 
                     From ! {invalid_username,?MODULE},
                     loop(Accounts)
@@ -54,10 +54,10 @@ loop(Accounts)->
                     loop(maps:update(Username,{Passwd,false},Accounts));
                 {ok,{Passwd,false}} -> 
                     From ! {not_logged_in,?MODULE},
-                    loop(maps:update(Username,{Passwd,false},Accounts));
+                    loop(Accounts);
                 {ok,_} -> 
-                    From ! {invalid_password,?MODULE},
-                    loop(maps:update(Username,{Passwd,false},Accounts));
+                    From ! {invalid_passwd,?MODULE},
+                    loop(Accounts);
                 error ->
                     From ! {invalid_username,?MODULE},
                     loop(Accounts)
