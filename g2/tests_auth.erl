@@ -1,4 +1,4 @@
--module(tests).
+-module(tests_auth).
 -export([run/0]).
 
 run() ->

@@ -1,4 +1,4 @@
--module(login_manager).
+-module(auth_manager).
 -export([start/0,stop/0,create_account/2,close_account/2,login/2,logout/2,online/0]).
 
 start()->
@@ -72,7 +72,7 @@ loop(Accounts)->
             From ! {LoggedInAccNames,?MODULE}, 
             loop(Accounts);
         stop -> true;
-        _ -> error_logger:error_report("Forbidden message on login_manager"),
+        _ -> error_logger:error_report("Unknown message on login_manager"),
         loop(Accounts)
     end.
 

@@ -1,0 +1,3 @@
+c(lock).
+c(tests_lock).
+tests_lock:run().
