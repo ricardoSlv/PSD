@@ -57,7 +57,7 @@ runner4(Lock)->
     success_released=lock_selective:release(Lock).
 
 destroyer(Lock)->
-    timer:sleep(3000),
+    timer:sleep(5000),
     success_destroyed=lock_selective:destroy(Lock).
 
 

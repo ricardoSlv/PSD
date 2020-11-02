@@ -1,4 +1,4 @@
--module(lock).
+-module(lock_selective).
 -export([create/0,destroy/1,acquire/2,release/1]).
 
 create()->
@@ -10,7 +10,6 @@ loop(Readers,PendingWriter,Writing) ->
         {write,From} when (PendingWriter == none) and ((Readers > 0) or (Writing==true)) ->
             loop(Readers,From,Writing);
         {write,From} when (Readers == 0) and (Writing==false) ->
-            %É garantido que nao há PendingWriter nesta situação
             From ! {success_acquired,self()},
             loop(0,none,true);
         {read,From} when (PendingWriter == none) and (Writing == false) ->
@@ -19,16 +18,7 @@ loop(Readers,PendingWriter,Writing) ->
         {release,From} when (Readers > 1) ->
             From ! {success_released,self()},
             loop(Readers-1,PendingWriter,false);
-        {release,From} when (Readers == 1) ->
-            From ! {success_released,self()},
-            case PendingWriter of 
-                none ->
-                    loop(0,none,false);
-                _ ->
-                    PendingWriter ! {success_acquired,self()}
-                end
-            ;
-        {release,From} when (Readers == 0) ->
+        {release,From} when (Readers =< 1) ->
             From ! {success_released,self()},
             case PendingWriter of 
                 none ->
@@ -36,11 +26,9 @@ loop(Readers,PendingWriter,Writing) ->
                 _ ->
                     PendingWriter ! {success_acquired,self()},
                     loop(0,none,true)
-            end;
-        {stop,From} -> From ! {success_destroyed,self()};
-        _ -> 
-        error_logger:error_report("Forbidden message on lock empty"),
-        loop(Readers,PendingWriter,Writing)
+                end
+            ;
+        {stop,From} -> From ! {success_destroyed,self()}
     end
 .
 
