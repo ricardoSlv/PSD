@@ -6,7 +6,7 @@ import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZContext;
 
-public class Client {
+public class Client1 {
     public static void main(String[] args) {
         String currentRoom = args[0];
         try (ZContext context = new ZContext();
@@ -17,7 +17,7 @@ public class Client {
             socketPush.connect("tcp://localhost:" + 5001);
 
             socketSub.subscribe(args[0].getBytes());
-            new pubReaderThread(socketSub).start();
+            new pubReaderThread1(socketSub).start();
             while (true) {
                 String msg = System.console().readLine();
                 String token1 = msg.split(" ")[0];
@@ -39,9 +39,9 @@ public class Client {
     }
 }
 
-class pubReaderThread extends Thread{
+class pubReaderThread1 extends Thread{
     private ZMQ.Socket socket;
-    public pubReaderThread(ZMQ.Socket socket){
+    public pubReaderThread1(ZMQ.Socket socket){
         this.socket=socket;
     }
     @Override
