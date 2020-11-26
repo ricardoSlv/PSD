@@ -6,6 +6,7 @@ import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZContext;
 
+//1Pub server, 1SUb server, 5000, 5001
 public class Client1 {
     public static void main(String[] args) {
         String currentRoom = args[0];

@@ -7,6 +7,7 @@ import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZContext;
 
+//2Pub servers, 2Sub servers, 5000, 5001, 8000, 8001
 public class Client2 {
     public static void main(String[] args) {
         Integer[] pubServers = {5000,5001};
